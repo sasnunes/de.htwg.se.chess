@@ -5,6 +5,11 @@ import static de.htwg.chess.model.impl.FieldConstants.*;
 import java.util.LinkedList;
 import java.util.List;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
+
+import de.htwg.chess.MyActor;
 import de.htwg.chess.model.Color;
 import de.htwg.chess.model.IChessboard;
 import de.htwg.chess.model.IChesspiece;
@@ -19,10 +24,14 @@ public class Team implements ITeam {
 	private MoveCheckerVisitor mc;
 	private IChesspiece king;
 
+	private final ActorSystem system = ActorSystem.create("MyActorSystem");
+	private final Props props;
+
 	public Team(Color color, IChessboard chessboard, MoveCheckerVisitor mc) {
 		this.chessboard = chessboard;
 		this.color = color;
 		this.mc = mc;
+		this.props = Props.create(MyActor.class, mc);
 		pieceList = new LinkedList<>();
 		switch (color) {
 		case WHITE:
@@ -85,8 +94,13 @@ public class Team implements ITeam {
 
 	@Override
 	public void updatePosMoves() {
-		for (IChesspiece piece : pieceList)
-			piece.checkPossibleMoves(mc);
+		for (IChesspiece piece : pieceList) {
+			//create a new actor for each chesspiece
+			ActorRef actor = system.actorOf(props);
+
+			//send exactly one chesspiece to each actor
+			actor.tell(piece, actor);
+		}
 	}
 
 	@Override

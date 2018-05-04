@@ -4,16 +4,25 @@ import akka.actor.AbstractActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
+import de.htwg.chess.model.IChesspiece;
+import de.htwg.chess.model.MoveCheckerVisitor;
+
 public class MyActor extends AbstractActor {
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
+    private MoveCheckerVisitor movechecker;
+
+    public MyActor(MoveCheckerVisitor movechecker) {
+        this.movechecker = movechecker;
+    }
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(String.class, s -> {
-                    log.info("Received String message: {}", s);
+                .match(IChesspiece.class, piece -> {
+                    //log.info("Received chesspiece: {}", piece.toString());
+                    piece.checkPossibleMoves(movechecker);
                 })
-                .matchAny(o -> log.info("received unknown message"))
+                .matchAny(o -> log.error("received unknown message"))
                 .build();
     }
 }
