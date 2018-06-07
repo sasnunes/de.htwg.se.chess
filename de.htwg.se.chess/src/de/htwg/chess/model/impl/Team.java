@@ -7,6 +7,7 @@ import java.util.List;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.actor.PoisonPill;
 import akka.actor.Props;
 
 import de.htwg.chess.MyActor;
@@ -94,12 +95,15 @@ public class Team implements ITeam {
 
 	@Override
 	public void updatePosMoves() {
+		//create an actor
+		ActorRef actor = system.actorOf(props);
 		for (IChesspiece piece : pieceList) {
-			//create a new actor for each chesspiece
-			ActorRef actor = system.actorOf(props);
-
-			//send exactly one chesspiece to each actor
+			//send one chesspiece per message
 			actor.tell(piece, actor);
+		}
+		actor.tell(PoisonPill.getInstance(), ActorRef.noSender());
+		while (!actor.isTerminated()) {
+			//wait
 		}
 	}
 
