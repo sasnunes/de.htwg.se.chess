@@ -2,15 +2,22 @@ package de.htwg.chess.model.impl;
 
 import de.htwg.chess.model.IChesspiece;
 import de.htwg.chess.model.IField;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "Field")
 public final class Field implements IField {
+
+	@Id @Column(name = "x")
 	private char x;
+	@Id @Column(name = "y")
 	private int y;
+	@Column(name = "chesspiece")
 	private IChesspiece cp;
 
 	public Field(char x, int y) {
 		if (!setPosition(x, y))
-			throw new IllegalArgumentException(x + "" + y + " is not a valid Position");
+			throw new IllegalArgumentException(x + y + " is not a valid Position");
 		cp = null;
 	}
 
@@ -60,16 +67,12 @@ public final class Field implements IField {
 	}
 
 	public boolean samePosition(IField pos) {
-		if (pos == null || this.x != pos.getX() || this.y != pos.getY())
-			return false;
-		return true;
+		return (pos != null && this.x == pos.getX() && this.y == pos.getY());
 	}
 
 	@Override
 	public boolean isFieldOccupied() {
-		if (cp != null)
-			return true;
-		return false;
+		return cp != null;
 	}
 
 	@Override
