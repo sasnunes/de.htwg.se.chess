@@ -26,6 +26,11 @@ public interface IChessboard {
 	IField getField(int x, int y);
 
 	/**
+	 * Returns the Field-Matrix representing all the chessboard fields.
+	 * */
+	IField[][] getAllFields();
+
+	/**
 	 * Returns a text-listed representation of the current chessboard-state.
 	 * Each chessfield, which is not empty gets written in a new line, followed
 	 * by the chesspiece (type and color).

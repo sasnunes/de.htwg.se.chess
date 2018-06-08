@@ -19,7 +19,7 @@ public class MyActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(IChesspiece.class, piece -> {
-                    System.out.printf("%s received chesspiece: %s%n", this.getContext() ,piece.toString());
+                    //System.out.printf("%s received chesspiece: %s%n", this.getContext() ,piece.toString());
                     piece.checkPossibleMoves(movechecker);
                 })
                 .matchAny(o -> log.error("received unknown message"))

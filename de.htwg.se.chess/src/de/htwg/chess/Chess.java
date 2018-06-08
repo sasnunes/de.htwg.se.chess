@@ -45,7 +45,7 @@ public class Chess {
 
 	public static void main(String[] args) {
 
-		//ChessDAO chess_dao = new ChessDAOHibernateImpl();
+		ChessDAO chess_dao = new ChessDAOHibernateImpl();
 
 		Chess game = Chess.getInstance();
 		if (args.length == 0) {

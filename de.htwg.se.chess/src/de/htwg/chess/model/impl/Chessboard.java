@@ -48,6 +48,11 @@ public class Chessboard implements IChessboard {
 	}
 
 	@Override
+	public IField[][] getAllFields() {
+		return board;
+	}
+
+	@Override
 	public ITeam getTeam(Color color) {
 		return teamlist[color.ordinal()];
 	}
