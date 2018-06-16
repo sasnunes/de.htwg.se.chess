@@ -1,9 +1,13 @@
 package de.htwg.chess;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import junit.framework.TestCase;
 
+@Ignore("Ignore this Test-Class if you run tests with an active DAO.\n" +
+        "To run this tests, make sure to disable the DAO instantiation " +
+        "within <ChessController.java>'s constructor.")
 public class ChessTest extends TestCase {
     String[] some_moves = {"a2-a3", "a7-a5", "b2-b4", "print",
             "printall", "ahsfl", "h"};
@@ -26,7 +30,6 @@ public class ChessTest extends TestCase {
                 Chess.getInstance().getController().getSymboleByField('B', 4));
         assertEquals("\u265F",
                 Chess.getInstance().getController().getSymboleByField('A', 5));
-        Chess.main(new String[]{"r", "q"});
     }
 
     @Test

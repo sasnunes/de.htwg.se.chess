@@ -23,12 +23,16 @@ public class ChessMenuBar extends JMenuBar {
 	JMenu gameMenu;
 	JMenuItem restartMenuItem, quitMenuItem;
 
+	JMenu persistenceMenu;
+	JMenuItem saveMenuItem, loadMenuItem;
+
 	JMenu helpMenu;
 	JMenuItem helpMenuItem, aboutMenuItem;
 
 	public ChessMenuBar(IChessController controller, JFrame frame) {
 		this.controller = controller;
 		createGameMenu(controller);
+		createPersistenceMenu(controller);
 		createHelpMenu(frame);
 
 	}
@@ -55,6 +59,30 @@ public class ChessMenuBar extends JMenuBar {
 		quitMenuItem.setMnemonic(KeyEvent.VK_Q);
 		gameMenu.add(quitMenuItem);
 		this.add(gameMenu);
+	}
+
+	private void createPersistenceMenu(final IChessController controller) {
+		persistenceMenu = new JMenu("Persistence");
+		saveMenuItem = new JMenuItem("Save");
+		saveMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.saveAllFields();
+			}
+		});
+		saveMenuItem.setMnemonic(KeyEvent.VK_S);
+		persistenceMenu.add(saveMenuItem);
+		persistenceMenu.addSeparator();
+		loadMenuItem = new JMenuItem("Load");
+		loadMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.loadAllFields();
+			}
+		});
+		loadMenuItem.setMnemonic(KeyEvent.VK_L);
+		persistenceMenu.add(loadMenuItem);
+		this.add(persistenceMenu);
 	}
 
 	private void createHelpMenu(final JFrame frame) {

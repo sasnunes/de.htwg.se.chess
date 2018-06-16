@@ -1,5 +1,7 @@
 package de.htwg.chess.controller.impl;
 
+import de.htwg.chess.ChessDAO;
+import de.htwg.chess.ChessDAOHibernateImpl;
 import de.htwg.chess.model.IChessboard;
 import de.htwg.chess.model.IChesspiece;
 import de.htwg.chess.model.IField;
@@ -13,6 +15,9 @@ import de.htwg.chess.model.impl.Rook;
 import de.htwg.util.observer.Observable;
 import de.htwg.chess.controller.ExitEvent;
 import de.htwg.chess.controller.IChessController;
+
+import java.util.List;
+
 import static de.htwg.chess.model.Color.*;
 
 public class ChessController extends Observable implements IChessController {
@@ -24,12 +29,15 @@ public class ChessController extends Observable implements IChessController {
 	private boolean readyToTransform;
 	private IChesspiece cpToTranform;
 	private boolean wasMoved;
+	private ChessDAO chessDAO;
 
 	public ChessController() {
 		board = new Chessboard();
 		isOnTurn = board.getTeam(WHITE);
 		isInCheck = new boolean[2];
 		checkmate = false;
+		//disable the following line when running tests in "ChessTest". Ignored by default.
+		chessDAO = new ChessDAOHibernateImpl();
 	}
 
 	@Override
@@ -302,10 +310,24 @@ public class ChessController extends Observable implements IChessController {
 		return "";
 	}
 
+	public void saveAllFields() {
+		chessDAO.saveBoard(board);
+	}
+
+	@Override
+	public void loadAllFields() {
+	    List<IField> fields = chessDAO.loadBoard();
+	    for (IField field : fields) {
+	        board.setField(field.getX() - 'A', field.getY() - 1, field);
+        }
+	}
+
 	@Override
 	public void quit() {
+		chessDAO.shutdown();
 		statusMessage = "Exit...";
 		notifyObservers(new ExitEvent());
+		System.exit(0);
 	}
 
 }

@@ -2,17 +2,11 @@ package de.htwg.chess.model.impl;
 
 import de.htwg.chess.model.IChesspiece;
 import de.htwg.chess.model.IField;
-import javax.persistence.*;
 
-@Entity
-@Table(name = "Field")
 public final class Field implements IField {
 
-	@Id @Column(name = "x")
 	private char x;
-	@Id @Column(name = "y")
 	private int y;
-	@Column(name = "chesspiece")
 	private IChesspiece cp;
 
 	public Field(char x, int y) {

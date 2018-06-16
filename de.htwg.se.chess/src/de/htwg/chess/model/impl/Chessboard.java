@@ -7,6 +7,9 @@ import de.htwg.chess.model.IField;
 import de.htwg.chess.model.ITeam;
 import de.htwg.chess.model.MoveCheckerVisitor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 
  * @author Sascha Nunes, Kevin Deggelmann (team 10)
@@ -41,6 +44,11 @@ public class Chessboard implements IChessboard {
 	}
 
 	@Override
+	public void setField(int x, int y, IField field) {
+		board[x][y] = field;
+	}
+
+	@Override
 	public IField getField(int x, int y) {
 		if (x < 0 || x > 7 || y < 0 || y > 7)
 			return null;
@@ -48,8 +56,14 @@ public class Chessboard implements IChessboard {
 	}
 
 	@Override
-	public IField[][] getAllFields() {
-		return board;
+	public List<IField> getAllFields() {
+		List<IField> list = new ArrayList<>();
+		for (IField[] row : board) {
+			for (IField cell : row) {
+				list.add(cell);
+			}
+		}
+		return list;
 	}
 
 	@Override

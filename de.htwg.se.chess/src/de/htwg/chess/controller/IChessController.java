@@ -1,7 +1,11 @@
 package de.htwg.chess.controller;
 
+import de.htwg.chess.PersistentField;
+import de.htwg.chess.model.IField;
 import de.htwg.chess.model.ITeam;
 import de.htwg.util.observer.IObservable;
+
+import java.util.List;
 
 public interface IChessController extends IObservable {
 	/**
@@ -100,6 +104,16 @@ public interface IChessController extends IObservable {
 	 * @return graphical representation of chesspiece
 	 */
 	String getSymboleByField(char x, int y);
+
+	/**
+	 * Saves game-state to the database.
+	 */
+	void saveAllFields();
+
+	/**
+	 * Loads game-state from the database.
+	 */
+	void loadAllFields();
 
 	/**
 	 * Notifies observers to exit the game.

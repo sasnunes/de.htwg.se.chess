@@ -1,5 +1,7 @@
 package de.htwg.chess.model;
 
+import java.util.List;
+
 public interface IChessboard {
 
 	/**
@@ -11,6 +13,8 @@ public interface IChessboard {
 	 * @return ITeam of the specified parameter "color".
 	 */
 	ITeam getTeam(Color color);
+
+	void setField(int x, int y, IField field);
 
 	/**
 	 * Returns the IField with the specified x and y Values or null if indices
@@ -26,9 +30,9 @@ public interface IChessboard {
 	IField getField(int x, int y);
 
 	/**
-	 * Returns the Field-Matrix representing all the chessboard fields.
+	 * Returns a list containing all the fields of the board field-matrix.
 	 * */
-	IField[][] getAllFields();
+	List<IField> getAllFields();
 
 	/**
 	 * Returns a text-listed representation of the current chessboard-state.
